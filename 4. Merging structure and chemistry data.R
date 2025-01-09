@@ -1,21 +1,10 @@
 library(dplyr)
 library(beepr)
-setwd("C:/Users/Emily/Box/Sacramento Winter run Chinook/Otoliths/")
-Microchemistry<-read.csv("MicrochemistryInterpolated_withHabitat.csv")
+setwd("C:/Users/echen/Box/Sacramento Winter run Chinook/Otoliths/")
+Microchemistry18<-read.csv("Interpolated Microchemistry with Habitat 2018.csv")
+Microchemistry19<-read.csv("Interpolated Microchemistry with Habitat 2019.csv")
+Microchemistry<-rbind(Microchemistry18, Microchemistry19)
 Microstructure<-read.csv("AllMicrostructure_data.csv")
-Exclude<-Microstructure %>%
-  filter(Tag == "EXCL")
-Keep<-rbind(Microstructure %>%
-  filter(Sample_ID == "WR15-5288" & Reader == "GW"),Microstructure %>%
-  filter(Sample_ID == "WR15-5006" & Reader == "JVL"))
-Microstructure<-Microstructure %>%
-  filter(!Sample_ID %in% Exclude$Sample_ID) %>% #Remove reads with exclude code
-  filter(Sample_ID != "WR15-5288")%>%  #remove duplicate reads, add back in with Keep
-  filter(Sample_ID != "WR15-5006") %>%
-  filter(Sample_ID != "WR15-5111") %>% #weird measurements
-  filter(!is.na(Inc_distance)) %>%
-  filter(!is.na(Inc_no))
-Microstructure<-rbind(Microstructure, Keep)
 ############################################
 #remove isotope samples that don't have a corresponding microstructure sample and vice versa
 Microchemistry<- Microchemistry%>%
